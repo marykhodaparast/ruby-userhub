@@ -14,6 +14,7 @@
       <% if @current_user %>
         <a href="/dashboard">Dashboard</a>
         <form action="/logout" method="post" class="inline-form">
+          <input type="hidden" name="csrf_token" value="<%= h(csrf_token) %>">
           <button type="submit" class="nav-button">Log out</button>
         </form>
       <% else %>

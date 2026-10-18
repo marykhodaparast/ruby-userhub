@@ -5,6 +5,7 @@
   <p class="subtitle">Join UserHub and manage your account in one place.</p>
 
   <form action="/register" method="post" class="auth-form">
+    <input type="hidden" name="csrf_token" value="<%= h(csrf_token) %>">
     <label for="name">Full name</label>
     <input
       id="name"

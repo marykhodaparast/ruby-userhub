@@ -37,6 +37,9 @@ SQL
 db.close
 
 helpers do
+  def csrf_token
+     session[:csrf_token] ||= SecureRandom.hex(32)
+  end
   def h(value)
     Rack::Utils.escape_html(value.to_s)
   end
@@ -66,6 +69,19 @@ helpers do
 end
 
 before do
+  if request.post?
+    expected_token = session[:csrf_token]
+    submitted_token = params[:csrf_token].to_s
+
+    unless expected_token &&
+           Rack::Utils.secure_compare(
+             expected_token,
+             submitted_token
+           )
+      halt 403, "Invalid or missing CSRF token. Please refresh the page and try again."
+    end
+  end
+
   @current_user = current_user
   @error = session.delete(:error)
   @success = session.delete(:success)

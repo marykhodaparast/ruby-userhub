@@ -5,6 +5,7 @@
   <p class="subtitle">Enter your details to access your dashboard.</p>
 
   <form action="/login" method="post" class="auth-form">
+    <input type="hidden" name="csrf_token" value="<%= h(csrf_token) %>">
     <label for="email">Email address</label>
     <input
       id="email"
