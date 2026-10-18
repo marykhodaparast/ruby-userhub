@@ -1,0 +1,45 @@
+
+<section class="auth-card">
+  <div class="eyebrow">GET STARTED</div>
+  <h1>Create your account</h1>
+  <p class="subtitle">Join UserHub and manage your account in one place.</p>
+
+  <form action="/register" method="post" class="auth-form">
+    <label for="name">Full name</label>
+    <input
+      id="name"
+      type="text"
+      name="name"
+      placeholder="Your full name"
+      autocomplete="name"
+      required
+    >
+
+    <label for="email">Email address</label>
+    <input
+      id="email"
+      type="email"
+      name="email"
+      placeholder="you@example.com"
+      autocomplete="email"
+      required
+    >
+
+    <label for="password">Password</label>
+    <input
+      id="password"
+      type="password"
+      name="password"
+      placeholder="At least 8 characters"
+      minlength="8"
+      autocomplete="new-password"
+      required
+    >
+
+    <button type="submit" class="primary-button">Create account</button>
+  </form>
+
+  <p class="switch-link">
+    Already have an account? <a href="/login">Log in</a>
+  </p>
+</section>

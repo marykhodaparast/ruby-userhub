@@ -1,0 +1,25 @@
+
+<section class="welcome-section">
+  <div class="eyebrow">YOUR WORKSPACE</div>
+  <h1>Welcome, <%= h(@current_user["name"]) %>!</h1>
+  <p class="subtitle">Your UserHub account is ready.</p>
+</section>
+
+<section class="stats-grid">
+  <article class="stat-card">
+    <span class="stat-label">Registered users</span>
+    <strong class="stat-value"><%= @user_count %></strong>
+    <p>Accounts in UserHub</p>
+  </article>
+
+  <article class="stat-card">
+    <span class="stat-label">Account email</span>
+    <strong class="email-value"><%= h(@current_user["email"]) %></strong>
+    <p>Your registered email address</p>
+  </article>
+</section>
+
+<section class="info-card">
+  <h2>You're all set</h2>
+  <p>This is your private dashboard. Next, we'll add user search, filtering, and AI-powered questions.</p>
+</section>

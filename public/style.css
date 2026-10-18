@@ -1,0 +1,236 @@
+:root {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #172033;
+    background: #f5f7fb;
+    font-synthesis: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar {
+    height: 76px;
+    padding: 0 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-bottom: 1px solid #e8ebf2;
+}
+
+.brand {
+    color: #5145cd;
+    font-size: 25px;
+    font-weight: 800;
+    text-decoration: none;
+    letter-spacing: -1px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+nav a,
+.switch-link a {
+    color: #5145cd;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.nav-button {
+    background: none;
+    border: 0;
+    color: #515b70;
+    font: inherit;
+    cursor: pointer;
+}
+
+.container {
+    width: min(100% - 32px, 960px);
+    margin: 56px auto;
+    flex: 1;
+}
+
+.auth-card {
+    width: min(100%, 460px);
+    margin: 0 auto;
+    padding: 38px;
+    background: #fff;
+    border: 1px solid #e8ebf2;
+    border-radius: 18px;
+    box-shadow: 0 12px 40px rgba(26, 35, 60, 0.06);
+}
+
+.eyebrow {
+    color: #6558d9;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+}
+
+h1 {
+    margin: 12px 0;
+    font-size: clamp(27px, 5vw, 35px);
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    color: #717b8f;
+    line-height: 1.7;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 28px;
+}
+
+.auth-form label {
+    margin: 16px 0 8px;
+    font-size: 14px;
+    font-weight: 650;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #dce1eb;
+    border-radius: 9px;
+    background: #fff;
+    font: inherit;
+    outline: none;
+}
+
+.auth-form input:focus {
+    border-color: #6558d9;
+    box-shadow: 0 0 0 3px rgba(101, 88, 217, 0.12);
+}
+
+.primary-button {
+    margin-top: 26px;
+    padding: 14px;
+    border: 0;
+    border-radius: 9px;
+    color: white;
+    background: #5145cd;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.primary-button:hover {
+    background: #4035b3;
+}
+
+.switch-link {
+    margin: 24px 0 0;
+    color: #717b8f;
+    text-align: center;
+    font-size: 14px;
+}
+
+.alert {
+    margin: 0 auto 22px;
+    padding: 14px 16px;
+    border-radius: 9px;
+}
+
+.error {
+    color: #a42635;
+    background: #fff0f1;
+}
+
+.success {
+    color: #176b43;
+    background: #eaf9f0;
+}
+
+.welcome-section {
+    margin-bottom: 30px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.stat-card,
+.info-card {
+    padding: 25px;
+    border: 1px solid #e8ebf2;
+    border-radius: 14px;
+    background: white;
+}
+
+.stat-label {
+    display: block;
+    color: #717b8f;
+    font-size: 14px;
+}
+
+.stat-value {
+    display: block;
+    margin-top: 12px;
+    font-size: 36px;
+}
+
+.email-value {
+    display: block;
+    margin-top: 15px;
+    overflow-wrap: anywhere;
+    font-size: 18px;
+}
+
+.stat-card p,
+.info-card p {
+    color: #717b8f;
+    line-height: 1.7;
+}
+
+.info-card {
+    margin-top: 20px;
+}
+
+footer {
+    padding: 24px;
+    color: #8a93a5;
+    text-align: center;
+    font-size: 13px;
+}
+
+@media (max-width: 560px) {
+    .topbar {
+        padding: 0 20px;
+    }
+
+    nav {
+        gap: 14px;
+    }
+
+    .container {
+        margin: 30px auto;
+    }
+
+    .auth-card {
+        padding: 26px 22px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

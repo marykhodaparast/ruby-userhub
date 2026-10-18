@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UserHub</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">UserHub</a>
+    <nav>
+      <% if @current_user %>
+        <a href="/dashboard">Dashboard</a>
+        <form action="/logout" method="post" class="inline-form">
+          <button type="submit" class="nav-button">Log out</button>
+        </form>
+      <% else %>
+        <a href="/login">Log in</a>
+        <a href="/register">Sign up</a>
+      <% end %>
+    </nav>
+  </header>
+
+  <main class="container">
+    <% if @error %>
+      <div class="alert error"><%= h(@error) %></div>
+    <% end %>
+
+    <% if @success %>
+      <div class="alert success"><%= h(@success) %></div>
+    <% end %>
+
+    <%= yield %>
+  </main>
+
+  <footer>© <%= Time.now.year %> UserHub · Simple user management</footer>
+</body>
+</html>
