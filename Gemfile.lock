@@ -1,0 +1,84 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    base64 (0.3.0)
+    bcrypt (3.1.22)
+    logger (1.7.0)
+    mustermann (3.1.1)
+    nio4r (2.7.5)
+    puma (8.0.2)
+      nio4r (~> 2.0)
+    rack (3.2.7)
+    rack-protection (4.2.1)
+      base64 (>= 0.1.0)
+      logger (>= 1.6.0)
+      rack (>= 3.0.0, < 4)
+    rack-session (2.1.2)
+      base64 (>= 0.1.0)
+      rack (>= 3.0.0)
+    rackup (2.3.1)
+      rack (>= 3)
+    sinatra (4.2.1)
+      logger (>= 1.6.0)
+      mustermann (~> 3.0)
+      rack (>= 3.0.0, < 4)
+      rack-protection (= 4.2.1)
+      rack-session (>= 2.0.0, < 3)
+      tilt (~> 2.0)
+    sqlite3 (2.10.0-aarch64-linux-gnu)
+    sqlite3 (2.10.0-aarch64-linux-musl)
+    sqlite3 (2.10.0-arm-linux-gnu)
+    sqlite3 (2.10.0-arm-linux-musl)
+    sqlite3 (2.10.0-arm64-darwin)
+    sqlite3 (2.10.0-x86-linux-gnu)
+    sqlite3 (2.10.0-x86-linux-musl)
+    sqlite3 (2.10.0-x86_64-darwin)
+    sqlite3 (2.10.0-x86_64-linux-gnu)
+    sqlite3 (2.10.0-x86_64-linux-musl)
+    tilt (2.9.0)
+
+PLATFORMS
+  aarch64-linux-gnu
+  aarch64-linux-musl
+  arm-linux-gnu
+  arm-linux-musl
+  arm64-darwin
+  x86-linux-gnu
+  x86-linux-musl
+  x86_64-darwin
+  x86_64-linux-gnu
+  x86_64-linux-musl
+
+DEPENDENCIES
+  bcrypt
+  puma
+  rackup
+  sinatra
+  sqlite3
+
+CHECKSUMS
+  base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
+  bcrypt (3.1.22) sha256=1f0072e88c2d705d94aff7f2c5cb02eb3f1ec4b8368671e19112527489f29032
+  logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
+  mustermann (3.1.1) sha256=4c6170c7234d5499c345562ba7c7dfe73e1754286dcc1abb053064d66a127198
+  nio4r (2.7.5) sha256=6c90168e48fb5f8e768419c93abb94ba2b892a1d0602cb06eef16d8b7df1dca1
+  puma (8.0.2) sha256=c8ed871dfbbe66448ea9ffd46692342d9804d4071522b52b5331b7b6e7b686fb
+  rack (3.2.7) sha256=93e13e1c24f93556671d85d2d79fa228c3485815c50d7e2f265b5330c6528fb7
+  rack-protection (4.2.1) sha256=cf6e2842df8c55f5e4d1a4be015e603e19e9bc3a7178bae58949ccbb58558bac
+  rack-session (2.1.2) sha256=595434f8c0c3473ae7d7ac56ecda6cc6dfd9d37c0b2b5255330aa1576967ffe8
+  rackup (2.3.1) sha256=6c79c26753778e90983761d677a48937ee3192b3ffef6bc963c0950f94688868
+  sinatra (4.2.1) sha256=b7aeb9b11d046b552972ade834f1f9be98b185fa8444480688e3627625377080
+  sqlite3 (2.10.0-aarch64-linux-gnu) sha256=dafeea94182af2eb53a10797be359fa6ec4270532bd45255d1c2beb69f2eb743
+  sqlite3 (2.10.0-aarch64-linux-musl) sha256=ec4ffedded0bd8579629e14d0647cfee9092c0af0009c05d6404d90857b1cb8b
+  sqlite3 (2.10.0-arm-linux-gnu) sha256=bcf2e165f27fd28f46ba34eeba3503d557ea7f76f9dd40434ce719f2ba0d5cda
+  sqlite3 (2.10.0-arm-linux-musl) sha256=338510e64876c7d02d91733eeaee384806c58b3835d8a688d1bfdbf7e468c497
+  sqlite3 (2.10.0-arm64-darwin) sha256=f619f33adfd01a1827e8764a3da92b289c1a99d93707d021a242dccba6909c4e
+  sqlite3 (2.10.0-x86-linux-gnu) sha256=a3ac204853c8c6b3f2f6f94ebaa52cba26cfd48df82537b1b154a28fc687f057
+  sqlite3 (2.10.0-x86-linux-musl) sha256=96508597fc5e54bfc1a12f94eb2d9f8e0517a8a377bdbfd6cc824215c4530adb
+  sqlite3 (2.10.0-x86_64-darwin) sha256=67306588548e62095855a511285daf33389d7f4311c1c33a1addd23e2b90cec5
+  sqlite3 (2.10.0-x86_64-linux-gnu) sha256=295f48b240ba663efa2e3b6f38cbc0f19f5c8a2823a71fda3bf15531be5dd0e8
+  sqlite3 (2.10.0-x86_64-linux-musl) sha256=876dd86a15c7828075ff7612e3d0ab0eb2eba0d8485b13fd4000e8a335f86bc5
+  tilt (2.9.0) sha256=da5735d0280bba96e9a91041bb14aee435ccad5c17b0fa519249ae543d9aa3a5
+
+BUNDLED WITH
+  4.0.8
