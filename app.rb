@@ -4,6 +4,7 @@ require "sqlite3"
 require "bcrypt"
 require "securerandom"
 require "rack/utils"
+require "json"
 
 set :bind, "127.0.0.1"
 set :port, 4567
@@ -37,6 +38,12 @@ SQL
 db.close
 
 helpers do
+  def require_api_login!
+  unless current_user
+    content_type :json
+    halt 401, { error: "Authentication required" }.to_json
+  end
+end
   def csrf_token
      session[:csrf_token] ||= SecureRandom.hex(32)
   end
@@ -177,6 +184,107 @@ end
 post "/logout" do
   session.clear
   redirect "/login"
+end
+
+
+# API: Get aggregate user statistics.
+get "/api/users/stats" do
+  require_api_login!
+  content_type :json
+
+  db = database
+
+  begin
+    total_users = db.get_first_value(
+      "SELECT COUNT(*) FROM users"
+    )
+
+    gmail_users = db.get_first_value(
+      "SELECT COUNT(*) FROM users WHERE LOWER(email) LIKE ?",
+      "%@gmail.com"
+    )
+
+    {
+      total_users: total_users,
+      gmail_users: gmail_users
+    }.to_json
+  ensure
+    db.close
+  end
+end
+
+# API: Get the most recently registered users.
+get "/api/users/recent" do
+  require_api_login!
+  content_type :json
+
+  limit = params.fetch("limit", "5").to_i
+  limit = [[limit, 1].max, 20].min
+
+  db = database
+
+  begin
+    users = db.execute(
+      "SELECT id, name, email, created_at
+       FROM users
+       ORDER BY created_at DESC, id DESC
+       LIMIT ?",
+      limit
+    )
+
+    {
+      count: users.length,
+      users: users.map do |user|
+        {
+          id: user["id"],
+          name: user["name"],
+          email: user["email"],
+          created_at: user["created_at"]
+        }
+      end
+    }.to_json
+  ensure
+    db.close
+  end
+end
+
+# API: Search users by email domain.
+get "/api/users/by-domain" do
+  require_api_login!
+  content_type :json
+
+  domain = params["domain"].to_s.downcase.strip
+
+  unless domain.match?(/\A[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?\.[a-z]{2,}\z/)
+    halt 400, { error: "Please provide a valid email domain." }.to_json
+  end
+
+  db = database
+
+  begin
+    users = db.execute(
+      "SELECT id, name, email, created_at
+       FROM users
+       WHERE LOWER(email) LIKE ?
+       ORDER BY id DESC",
+      "%@#{domain}"
+    )
+
+    {
+      domain: domain,
+      count: users.length,
+      users: users.map do |user|
+        {
+          id: user["id"],
+          name: user["name"],
+          email: user["email"],
+          created_at: user["created_at"]
+        }
+      end
+    }.to_json
+  ensure
+    db.close
+  end
 end
 
 not_found do
