@@ -5,6 +5,8 @@ require "bcrypt"
 require "securerandom"
 require "rack/utils"
 require "json"
+require "net/http"
+require "uri"
 
 set :bind, "127.0.0.1"
 set :port, 4567
@@ -286,6 +288,145 @@ get "/api/users/by-domain" do
     db.close
   end
 end
+
+
+# AI-powered natural-language questions about registered users.
+get "/assistant" do
+  require_login!
+  @question = nil
+  @answer = nil
+  @users = []
+  erb :assistant
+end
+
+post "/assistant" do
+  require_login!
+
+  @question = params[:question].to_s.strip
+  @answer = nil
+  @users = []
+
+  if @question.empty?
+    @answer = "Please enter a question."
+    return erb :assistant
+  end
+
+  if @question.length > 500
+    @answer = "Please keep your question under 500 characters."
+    return erb :assistant
+  end
+
+  begin
+    # Ask the local model to classify the question.
+    uri = URI("http://127.0.0.1:8080/v1/chat/completions")
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.open_timeout = 3
+    http.read_timeout = 90
+
+    request = Net::HTTP::Post.new(uri)
+    request["Content-Type"] = "application/json"
+    request.body = {
+      model: "local-model",
+      temperature: 0,
+      max_tokens: 150,
+      messages: [
+        {
+          role: "system",
+          content: <<~PROMPT
+            Classify the user's question about a user registration database.
+            Return ONLY one JSON object with these keys:
+            intent, limit, domain.
+            Allowed intents: user_stats, recent_users,
+            users_by_domain, unknown.
+            Use user_stats for total registered users or Gmail counts.
+            Use recent_users for recently registered users.
+            Use users_by_domain for users whose email ends with a domain.
+            For recent_users, set limit to the requested number, default 5.
+            For users_by_domain, set domain to the requested email domain.
+            Otherwise use unknown.
+            Never return SQL or extra text.
+            Example: {"intent":"recent_users","limit":5,"domain":""}
+          PROMPT
+        },
+        { role: "user", content: @question }
+      ]
+    }.to_json
+
+    response = http.request(request)
+    raise "Local model request failed" unless response.is_a?(Net::HTTPSuccess)
+
+    response_json = JSON.parse(response.body)
+    raw = response_json.dig("choices", 0, "message", "content").to_s
+    json_text = raw[raw.index("{")..raw.rindex("}")]
+    raise "Invalid model response" unless json_text
+
+    decision = JSON.parse(json_text)
+    intent = decision["intent"]
+
+    case intent
+    when "user_stats"
+      db = database
+      begin
+        total = db.get_first_value("SELECT COUNT(*) FROM users")
+        gmail = db.get_first_value(
+          "SELECT COUNT(*) FROM users WHERE LOWER(email) LIKE ?",
+          "%@gmail.com"
+        )
+        @answer = "There are #{total} registered users. #{gmail} have Gmail addresses."
+      ensure
+        db.close
+      end
+
+    when "recent_users"
+      limit = decision["limit"].to_i
+      limit = 5 if limit <= 0
+      limit = [[limit, 1].max, 20].min
+
+      db = database
+      begin
+        @users = db.execute(
+          "SELECT name, email, created_at FROM users
+           ORDER BY created_at DESC, id DESC LIMIT ?",
+          limit
+        )
+        @answer = "Here are the #{ @users.length } most recently registered users."
+      ensure
+        db.close
+      end
+
+    when "users_by_domain"
+      domain = decision["domain"].to_s.downcase.strip
+
+      unless domain.match?(/\A[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?\.[a-z]{2,}\z/)
+        @answer = "Please ask about a valid email domain, such as gmail.com."
+        return erb :assistant
+      end
+
+      db = database
+      begin
+        @users = db.execute(
+          "SELECT name, email, created_at FROM users
+           WHERE LOWER(email) LIKE ?
+           ORDER BY id DESC",
+          "%@#{domain}"
+        )
+        @answer = "Found #{@users.length} users with email addresses at #{domain}."
+      ensure
+        db.close
+      end
+
+    else
+      @answer = "I can answer questions about total users, Gmail addresses, recent registrations, and email domains. Try: How many users are registered?"
+    end
+
+  rescue StandardError => e
+    warn "Assistant error: #{e.class}: #{e.message}"
+    @answer = "Sorry, I couldn't process that question. Make sure the local AI model is running, then try again."
+  end
+
+  erb :assistant
+end
+
 
 not_found do
   "Page not found"

@@ -1,0 +1,51 @@
+<section class="welcome-section">
+  <div class="eyebrow">USERHUB AI</div>
+  <h1>Ask about your users</h1>
+  <p class="subtitle">
+    Ask a question in natural language about registered accounts.
+  </p>
+</section>
+
+<section class="info-card">
+  <form action="/assistant" method="post">
+    <input type="hidden" name="csrf_token" value="<%= h(csrf_token) %>">
+
+    <label for="question">Your question</label>
+    <input
+  id="question"
+  name="question"
+  type="text"
+  class="form-control"
+  style="width: 100%; box-sizing: border-box;"
+  maxlength="500"
+  value="<%= h(@question) %>"
+  placeholder="How many users have Gmail addresses?"
+  required
+>
+
+    <button type="submit" style="margin-top:10px !important">Ask question</button>
+  </form>
+</section>
+
+<% if @answer %>
+  <section class="info-card">
+    <h2>Answer</h2>
+    <p><%= h(@answer) %></p>
+
+    <% if @users.any? %>
+      <ul>
+        <% @users.each do |user| %>
+          <li>
+            <strong><%= h(user["name"]) %></strong> —
+            <%= h(user["email"]) %>
+            <% if user["created_at"] %>
+              <span>(<%= h(user["created_at"]) %>)</span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </section>
+<% end %>
+
+<p><a href="/dashboard">Back to dashboard</a></p>
