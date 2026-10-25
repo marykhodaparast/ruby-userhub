@@ -11,16 +11,21 @@ require "uri"
 set :bind, "0.0.0.0"
 set :port, Integer(ENV.fetch("PORT", "4567"))
 
-set :session_secret, ENV.fetch("SESSION_SECRET") {
-  SecureRandom.hex(64)
+set :session_secret, ENV.fetch("SESSION_SECRET")
+
+set :sessions, {
+  key: "userhub.session",
+  httponly: true,
+  same_site: :lax,
+  secure: ENV["RACK_ENV"] == "production"
 }
+
+enable :sessions
 
 set :host_authorization, {
   permitted_hosts: ["ruby-userhub-d63b5.containers.snapdeploy.app"]
 }
 
-enable :sessions
-set :sessions, httponly: true, same_site: :lax
 
 DB_PATH = File.expand_path("userhub.sqlite3", __dir__)
 
