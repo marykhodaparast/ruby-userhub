@@ -8,8 +8,8 @@ require "json"
 require "net/http"
 require "uri"
 
-set :bind, "127.0.0.1"
-set :port, 4567
+set :bind, "0.0.0.0"
+set :port, Integer(ENV.fetch("PORT", "4567"))
 
 set :session_secret, ENV.fetch("SESSION_SECRET") {
   SecureRandom.hex(64)
