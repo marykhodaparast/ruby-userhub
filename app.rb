@@ -15,6 +15,10 @@ set :session_secret, ENV.fetch("SESSION_SECRET") {
   SecureRandom.hex(64)
 }
 
+set :host_authorization, {
+  permitted_hosts: ["ruby-userhub-d63b5.containers.snapdeploy.app"]
+}
+
 enable :sessions
 set :sessions, httponly: true, same_site: :lax
 
