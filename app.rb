@@ -86,16 +86,27 @@ end
   end
 end
 
+
 before do
   if request.post?
     expected_token = session[:csrf_token]
     submitted_token = params[:csrf_token].to_s
 
-    unless expected_token &&
-           Rack::Utils.secure_compare(
-             expected_token,
-             submitted_token
-           )
+    tokens_match =
+      expected_token &&
+      !submitted_token.empty? &&
+      expected_token.bytesize == submitted_token.bytesize &&
+      Rack::Utils.secure_compare(
+        expected_token,
+        submitted_token
+      )
+
+    warn "[CSRF DEBUG] method=#{request.request_method}"
+    warn "[CSRF DEBUG] session_token_present=#{!expected_token.nil?}"
+    warn "[CSRF DEBUG] submitted_token_present=#{!submitted_token.empty?}"
+    warn "[CSRF DEBUG] tokens_match=#{!!tokens_match}"
+
+    unless tokens_match
       halt 403, "Invalid or missing CSRF token. Please refresh the page and try again."
     end
   end
