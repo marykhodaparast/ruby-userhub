@@ -23,7 +23,11 @@ set :sessions, {
 enable :sessions
 
 set :host_authorization, {
-  permitted_hosts: ["ruby-userhub-d63b5.containers.snapdeploy.app"]
+  permitted_hosts: [
+    "ruby-userhub-d63b5.containers.snapdeploy.app",
+    "localhost",
+    "127.0.0.1"
+  ]
 }
 
 
